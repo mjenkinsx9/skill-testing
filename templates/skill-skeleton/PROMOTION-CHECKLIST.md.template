@@ -1,30 +1,40 @@
-# Promotion Checklist — <name>
+# Promotion Record — <name>
 
 **Skill**: <name>
-**From**: `staging/<name>/`   **To**: `.claude/skills/<name>/`
-**Date prepared**: YYYY-MM-DD
+**Promoted**: YYYY-MM-DD  (`staging/<name>/` → `.claude/skills/<name>/`)
 
-## Pre-promotion verification
+> Mechanical gates — harness 0 FAIL, `tests.md` ≥3 scenarios with a fresh
+> `Last verified:` date, naming, sidecar linking — are machine-enforced by
+> `eval/check-skill.sh` and CI, so they are not re-attested here. This file
+> records only what a human (or judging agent) can attest.
 
-- [ ] `eval/check-skill.sh staging/<name>` → **0 FAIL** (WARNs reviewed)
-- [ ] `tests.md` has ≥3 real scenarios (golden / edge / error) with a fresh `Last verified:` date
-- [ ] Real-work evidence exists (the skill was built from doing the task 2–3×, not from imagination)
-- [ ] All sidecars present and referenced from SKILL.md, one level deep (no `a → b → c` chains)
-- [ ] Security review done (no secrets; security smells are intentional/explained)
-- [ ] Name is lowercase-hyphen, gerund form, matches the folder
+## Real-work evidence
+
+<What the 2–3 manual runs were: inputs, dates, and where the captures live.
+This is the "built from doing the task, not from imagination" attestation.>
+
+## Security review
+
+<Which harness WARNs were reviewed and why they're acceptable. For skills that
+touch credentials, browsers, or external systems: note the constraints that
+make them safe (and that you actually read the scripts/references, not just
+SKILL.md).>
+
+## Value-add verdict
+
 - [ ] **Value-add verdict**: PASS | CONCERN | FAIL  (date, lift /50, # seeds) — or **N/A (non-generative)**
-      *(generative/judgment skills only — run `eval/value-add-test.md`; a CONCERN/FAIL must be*
-      *acknowledged with a fix or written justification, not silently ignored)*
 
-## Promote
+<Generative/judgment skills only — run `eval/value-add-test.md`. A CONCERN or
+FAIL must be acknowledged here with a fix or a written justification, never
+silently ignored. Check 15 reads this line; check the box only when the
+verdict is real.>
 
-```bash
-cp -r staging/<name> .claude/skills/
-eval/check-skill.sh .claude/skills/<name>   # expect: 0 FAIL
-```
+## Strip list
 
-## Post-promotion
+<Exact staging-only files removed from the promoted copy (`goal.md`, `goals/`,
+raw evidence logs…), per CLAUDE.md "Skill location rules" — or "none".>
 
-- [ ] Skill auto-loads in a fresh Claude Code session (repo as cwd)
-- [ ] Live-tested with a few real requests
-- [ ] (Optional) development-only artifacts archived out of the promoted copy
+## Live test
+
+<Date + the real request(s) exercised in a fresh session after promotion,
+confirming the skill auto-loads and fires.>

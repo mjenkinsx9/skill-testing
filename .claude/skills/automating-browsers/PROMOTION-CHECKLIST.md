@@ -1,48 +1,47 @@
-# Promotion Checklist — automating-browsers
+# Promotion Record — automating-browsers
 
 **Skill**: automating-browsers
-**From**: `staging/automating-browsers/`   **To**: `.claude/skills/automating-browsers/`
-**Date prepared**: 2026-05-31
+**Promoted**: 2026-05-31 (recorded retroactively — the skill was already live;
+this file captures the gates as actually verified)
 
-> Recorded retroactively: this skill was already promoted and in live use.
-> The checklist captures the gates as actually verified, to satisfy Check 15
-> and document the skill's standing.
+> Mechanical gates (harness 0 FAIL, tests.md scenarios + freshness, naming,
+> sidecar linking) are machine-enforced by `eval/check-skill.sh` and CI and
+> are not re-attested here.
 
-## Pre-promotion verification
+## Real-work evidence
 
-- [x] `eval/check-skill.sh .claude/skills/automating-browsers` → **0 FAIL**
-      (the lone WARN was this missing PROMOTION-CHECKLIST.md; also green in CI on 2026-05-31)
-- [x] `tests.md` has 6 real scenarios (golden / form / login / edge / enterprise /
-      virtualized-table) — `Last verified: 2026-05-15`; the heading-extraction golden
-      path and the-internet login flow were re-verified live 2026-05-31
-- [x] Real-work evidence exists — the tests.md scenarios are drawn from live runs
-      (Anthropic docs, the-internet.herokuapp.com, Acumatica ERP, Pure Storage SAN);
-      "the patterns this skill teaches come directly from these runs"
-- [x] All sidecars present and referenced from SKILL.md, one level deep:
-      `references/reference.md`, `tests.md`, `test-prompts.md`
-- [x] Security reviewed — no harness security smells, no secrets. Credential handling
-      is constrained by the SKILL.md "Credentials" section (never hardcode/echo/commit;
-      stop at unexpected login walls). Dual-use browser-driving tool for interactive,
-      user-authorized use.
-- [x] Name is lowercase-hyphen, gerund form (`automating-browsers`), matches the folder
-- [x] **Value-add verdict**: **N/A (non-generative)** — a procedural/tool-driving skill
-      (snapshot→act→verify against a live browser), not a generative/judgment skill, so
-      the "beats the cold model" frame doesn't apply (per CLAUDE.md). Its value is the
-      Playwright-MCP tool-selection table and hard-won pitfalls (ref drift, virtualized
-      tables, link-click non-redirects) — mechanical aids, not judgment to A/B test.
+All six tests.md scenarios are drawn from live runs: Anthropic docs heading
+extraction, the-internet.herokuapp.com login/logout flows, an Acumatica ERP
+session (iframes, unlabeled icons, custom tab strips), and a Pure Storage SAN
+dashboard (virtualized tables). The patterns the skill teaches — ref drift,
+virtualized-table gaps, link-click non-redirects — come directly from those
+runs. Environment identifiers in the enterprise scenarios were anonymized for
+publication (2026-06-10); the runs were real. The golden path and the-internet
+login flow were re-verified live 2026-05-31.
 
-## Promote
+## Security review
 
-```bash
-cp -r staging/automating-browsers .claude/skills/
-eval/check-skill.sh .claude/skills/automating-browsers   # expect: 0 FAIL
-```
+No harness security smells, no secrets. Credential handling is constrained by
+the SKILL.md "Credentials" section: never hardcode/echo/commit credentials,
+treat user-supplied credentials as session-only, stop at unexpected login
+walls. Dual-use browser-driving tool, scoped to interactive, user-authorized
+use.
 
-## Post-promotion
+## Value-add verdict
 
-- [x] Skill auto-loads in a fresh Claude Code session (repo as cwd) — confirmed; appears
-      in the available-skills list
-- [x] Live-tested with real requests — 2026-05-31: heading extraction + the-internet
-      login flow exercised via Playwright MCP
-- [ ] (Optional) development-only artifacts archived out of the promoted copy — none;
-      all sidecars are production
+- [x] **Value-add verdict**: **N/A (non-generative)** — a procedural/tool-driving
+      skill (snapshot→act→verify against a live browser), not a generative/judgment
+      skill, so the "beats the cold model" frame doesn't apply (per CLAUDE.md). Its
+      value is the Playwright-MCP tool-selection table and hard-won pitfalls —
+      mechanical aids, not judgment to A/B test.
+
+## Strip list
+
+None — all sidecars (`references/reference.md`, `tests.md`, `test-prompts.md`)
+are production.
+
+## Live test
+
+2026-05-31 — heading extraction and the-internet login flow exercised via
+Playwright MCP in a live session; skill auto-loads and appears in the
+available-skills list with the repo as cwd.
