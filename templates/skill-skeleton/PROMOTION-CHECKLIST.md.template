@@ -1,0 +1,30 @@
+# Promotion Checklist — <name>
+
+**Skill**: <name>
+**From**: `staging/<name>/`   **To**: `.claude/skills/<name>/`
+**Date prepared**: YYYY-MM-DD
+
+## Pre-promotion verification
+
+- [ ] `eval/check-skill.sh staging/<name>` → **0 FAIL** (WARNs reviewed)
+- [ ] `tests.md` has ≥3 real scenarios (golden / edge / error) with a fresh `Last verified:` date
+- [ ] Real-work evidence exists (the skill was built from doing the task 2–3×, not from imagination)
+- [ ] All sidecars present and referenced from SKILL.md, one level deep (no `a → b → c` chains)
+- [ ] Security review done (no secrets; security smells are intentional/explained)
+- [ ] Name is lowercase-hyphen, gerund form, matches the folder
+- [ ] **Value-add verdict**: PASS | CONCERN | FAIL  (date, lift /50, # seeds) — or **N/A (non-generative)**
+      *(generative/judgment skills only — run `eval/value-add-test.md`; a CONCERN/FAIL must be*
+      *acknowledged with a fix or written justification, not silently ignored)*
+
+## Promote
+
+```bash
+cp -r staging/<name> .claude/skills/
+eval/check-skill.sh .claude/skills/<name>   # expect: 0 FAIL
+```
+
+## Post-promotion
+
+- [ ] Skill auto-loads in a fresh Claude Code session (repo as cwd)
+- [ ] Live-tested with a few real requests
+- [ ] (Optional) development-only artifacts archived out of the promoted copy

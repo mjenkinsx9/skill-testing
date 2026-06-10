@@ -1,0 +1,86 @@
+name: check-skills
+
+# Runs the deterministic harness (eval/check-skill.sh) on any skill under
+# .claude/skills/ or examples/ that a PR touches, and fails on a non-zero exit
+# (i.e. a FAIL). WARNs do not block — the harness only exits non-zero on FAILs.
+#
+# Scope is intentionally narrow (see eval/README.md "not a CI gate"):
+#   - staging/ is excluded — it is WARN-lenient by design.
+#   - The value-add test, security smells, and WARN triage stay manual/human.
+# This gate enforces only the already-hard FAIL rules on the dirs the repo
+# says "must always pass cleanly".
+
+on:
+  pull_request:
+    paths:
+      - '.claude/skills/**'
+      - 'examples/**'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: check-skills-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check-skills:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout (full history for diff)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install pyyaml
+        run: pip install pyyaml
+
+      - name: Run harness on changed skill dirs
+        shell: bash
+        run: |
+          set -uo pipefail
+
+          base_ref="${{ github.base_ref }}"
+          git fetch --no-tags origin "+refs/heads/${base_ref}:refs/remotes/origin/${base_ref}"
+          base="$(git merge-base "origin/${base_ref}" HEAD)"
+
+          # Map each changed file to its enclosing skill dir, restricted to the
+          # two protected roots. examples/<name>/...  ->  examples/<name>
+          # .claude/skills/<name>/...  ->  .claude/skills/<name>
+          mapfile -t dirs < <(
+            git diff --name-only "$base" HEAD | awk -F/ '
+              $1=="examples" && NF>=3 { print $1"/"$2 }
+              $1==".claude" && $2=="skills" && NF>=4 { print $1"/"$2"/"$3 }
+            ' | sort -u
+          )
+
+          if [ "${#dirs[@]}" -eq 0 ]; then
+            echo "No changed skill directories under .claude/skills/ or examples/ — nothing to check."
+            exit 0
+          fi
+
+          echo "Changed skill dirs:"
+          printf '  %s\n' "${dirs[@]}"
+
+          status=0
+          for d in "${dirs[@]}"; do
+            if [ ! -f "$d/SKILL.md" ]; then
+              echo "::notice::skipping $d (no SKILL.md — deleted or not a skill dir)"
+              continue
+            fi
+            echo "::group::check-skill.sh $d"
+            if bash eval/check-skill.sh "$d"; then
+              echo "clean: $d"
+            else
+              echo "::error::check-skill.sh reported FAIL(s) in $d"
+              status=1
+            fi
+            echo "::endgroup::"
+          done
+
+          exit $status

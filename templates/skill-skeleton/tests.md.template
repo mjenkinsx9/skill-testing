@@ -1,0 +1,48 @@
+# Tests for <skill-name>
+
+Verification scenarios. At least 3 covering golden path / edge / error
+(optional integration too; add more as you verify them). Add scenarios
+opportunistically as you exercise the skill; do NOT fabricate scenarios
+you haven't actually run.
+
+**Write each assertion to fail wrong output.** The **Expected behavior** field *is* the
+assertion — phrase it so a wrong or hallucinated result would fail it, by naming the specific
+behavior that's hard to produce without actually doing the work. Weak assertions that almost any
+plausible output satisfies ("produces output", "responds without error", "creates a file") are
+worse than useless: a pass on a weak assertion manufactures false confidence.
+
+Last verified: YYYY-MM-DD
+
+## Golden path: <one-line summary>
+
+**Input:** <what you pass to the skill>
+
+**Expected behavior:** <what the skill should do>
+
+**Verified output:** <what actually happened, abbreviated; or a pointer to a
+captured transcript>
+
+## Edge case: <one-line summary>
+
+**Input:** <empty / missing / unusual shape>
+
+**Expected behavior:** <how the skill handles it gracefully>
+
+**Verified output:** <what actually happened>
+
+## Error case: <one-line summary>
+
+**Input:** <something the skill must decline or fail safely on>
+
+**Expected behavior:** <fails gracefully, reports the problem, does not
+silently produce wrong output>
+
+**Verified output:** <what actually happened>
+
+## (Optional) Integration: <one-line summary>
+
+**Input:** <a scenario that exercises the skill alongside another tool>
+
+**Expected behavior:** <interaction is correct>
+
+**Verified output:** <what actually happened>

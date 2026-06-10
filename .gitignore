@@ -1,0 +1,11 @@
+.DS_Store
+*.swp
+*.swo
+*~
+runs/*/
+!runs/.gitkeep
+.serena/
+.playwright-mcp/
+.claude/worktrees/
+__pycache__/
+.pytest_cache/

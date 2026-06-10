@@ -1,0 +1,64 @@
+name: harness
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  harness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install Python deps
+        run: pip install pyyaml pytest
+
+      # CLAUDE.md: "examples must always pass the harness cleanly" —
+      # zero FAILs AND zero WARNs for every skill in examples/.
+      - name: examples/ — zero FAILs, zero WARNs
+        run: |
+          failed=0
+          for dir in examples/*/; do
+            [ -f "$dir/SKILL.md" ] || continue
+            echo "::group::$dir"
+            out=$(bash eval/check-skill.sh "$dir") || { echo "$out"; echo "FAIL in $dir"; failed=1; echo "::endgroup::"; continue; }
+            echo "$out"
+            if echo "$out" | grep -qE '^  WARN  '; then
+              echo "WARNs not allowed in examples/ ($dir)"; failed=1
+            fi
+            echo "::endgroup::"
+          done
+          exit $failed
+
+      - name: .claude/skills/ — zero FAILs (WARNs allowed)
+        run: |
+          failed=0
+          for dir in .claude/skills/*/; do
+            [ -f "$dir/SKILL.md" ] || continue
+            echo "::group::$dir"
+            bash eval/check-skill.sh "$dir" || { echo "FAIL in $dir"; failed=1; }
+            echo "::endgroup::"
+          done
+          exit $failed
+
+      - name: staging/ — zero FAILs (WARNs expected)
+        run: |
+          failed=0
+          for dir in staging/*/; do
+            [ -f "$dir/SKILL.md" ] || continue
+            echo "::group::$dir"
+            bash eval/check-skill.sh "$dir" || { echo "FAIL in $dir"; failed=1; }
+            echo "::endgroup::"
+          done
+          exit $failed
+
+      - name: Harness self-tests
+        run: bash eval/tests/run-self-tests.sh
+
+      - name: Python eval-script tests
+        run: python -m pytest eval/tests -q

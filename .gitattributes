@@ -1,0 +1,10 @@
+# Normalize line endings across Windows / Linux / macOS checkouts.
+# Without this, a Windows contributor with core.autocrlf=true can land
+# CRLF in the index and break the bash scripts on Linux/macOS — bash
+# treats \r as part of the command and fails with cryptic errors.
+
+* text=auto eol=lf
+
+# Belt-and-suspenders for the highest-stakes case: shell scripts MUST be
+# LF. Listed explicitly so the policy is visible to future contributors.
+*.sh text eol=lf

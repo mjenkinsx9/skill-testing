@@ -1,0 +1,26 @@
+# Reference for <skill-name>
+
+OPTIONAL sidecar. Use when SKILL.md would balloon past 500 lines if it
+contained this detail inline, or when the reference is consulted only for
+specific subtasks.
+
+Loaded by Claude on demand — only when SKILL.md actively links to it for
+the current task. Stays out of context the rest of the time (progressive
+disclosure).
+
+## Contents
+
+For files longer than ~100 lines, include a table of contents here so
+Claude can see scope even when previewing with partial reads:
+
+- Section A
+- Section B
+- Section C
+
+## Section A
+
+<detailed reference content>
+
+## Section B
+
+<detailed reference content>

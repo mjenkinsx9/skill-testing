@@ -1,0 +1,40 @@
+# Examples for <skill-name>
+
+OPTIONAL sidecar. Concrete input → output pairs. Use when the skill's
+quality benefits from few-shot demonstration rather than just description.
+
+## Example 1: <one-line summary>
+
+**Input:**
+```
+<input>
+```
+
+**Output:**
+```
+<output>
+```
+
+## Example 2: <one-line summary>
+
+**Input:**
+```
+<input>
+```
+
+**Output:**
+```
+<output>
+```
+
+## Example 3: <one-line summary>
+
+**Input:**
+```
+<input>
+```
+
+**Output:**
+```
+<output>
+```

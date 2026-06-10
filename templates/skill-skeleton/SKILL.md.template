@@ -1,0 +1,100 @@
+---
+# REQUIRED. ≤64 chars, lowercase letters/numbers/hyphens only.
+# Prefer gerund form: "processing-pdfs", "summarizing-files", "reviewing-diffs".
+# Must NOT contain "anthropic" or "claude".
+name: doing-something
+
+# REQUIRED. ≤1024 chars. Third person ("Extracts X…", not "I can…" or "You can…").
+# Include BOTH what the skill does AND when to use it. The description is the
+# trigger mechanism — see WRITING-DESCRIPTIONS.md (repo root) for how to write one.
+description: One sentence on what this skill does. Use when <specific trigger conditions>.
+
+# OPTIONAL (Claude Code only). Set true for skills with side effects you want
+# to invoke manually with /skill-name rather than have Claude auto-fire.
+# disable-model-invocation: true
+
+# OPTIONAL. Pre-approve tools the skill uses, so Claude doesn't need to ask.
+# allowed-tools: Read Grep Bash(git diff *)
+---
+
+# Doing Something
+
+## When to use
+
+State the trigger conditions plainly. Example: "When the user asks to ___,
+mentions ___, or provides a file matching ___."
+
+## Steps
+
+1. First step.
+2. Second step.
+3. Third step.
+
+For deeper material, link supporting files from this SKILL.md — keep
+references one level deep (do not chain `a.md → b.md → c.md`). Reference
+docs live in `references/`; link every one you ship (an unlinked file is
+never loaded — Check 20):
+
+- See [reference.md](references/reference.md) for the full criteria table.
+- See [examples.md](references/examples.md) for input/output pairs.
+
+## Output
+
+Describe the expected output shape. If a strict template is required, show it
+verbatim. If the format can flex, say so and provide a sensible default.
+
+## Examples
+
+Concrete input → output pairs help much more than abstract descriptions.
+
+## Sidecar files
+
+Layout: governance sidecars (`tests.md`, `test-prompts.md`,
+`PROMOTION-CHECKLIST.md`, `goal.md`) sit beside this `SKILL.md`; reference docs
+go in `references/`; executable scripts go in `scripts/`. Don't leave reference
+docs or scripts loose at the skill root (Checks 18/19).
+
+- `tests.md` — REQUIRED. at least 3 verification scenarios (golden / edge / error; add more as you verify them)
+  with a `Last verified:` date. The harness FAILs without this file outside
+  `staging/`. See `tests.md.template` in the skeleton.
+- `test-prompts.md` — only if you plan to autoresearch-improve this skill.
+  Positive + negative trigger fixtures used by `improving-skills`.
+- `references/reference.md` — optional. Keep only if the detail would push the
+  body toward the ~500-line budget or is needed on demand, not every run. Else
+  inline it. Keep each reference file ≤200 lines (Check 16); give any over
+  100 lines a `## Contents` table of contents (Check 17).
+- `references/examples.md` — optional. Keep only if input/output pairs show what
+  prose can't. If the steps are self-evident, skip it.
+- `scripts/` — optional. Utility scripts the skill executes (not loaded).
+- `PROMOTION-CHECKLIST.md` — the promotion record. Fill it in before copying
+  the skill to `.claude/skills/`. See `PROMOTION-CHECKLIST.md.template`.
+
+When in doubt, strip — an unused sidecar is just maintenance surface. Link any
+reference you ship from this SKILL.md, one level deep (no chains); an unlinked
+file is an orphan Claude never loads (Check 20).
+
+---
+
+<!--
+Author checklist (mirrors eval/check-skill.sh — run that before committing):
+
+  [ ] goal.md drafted (run `/goal-new-skill <name>` before manual practice runs)
+  [ ] name is lowercase + hyphens, ≤64 chars, no "anthropic"/"claude"
+  [ ] name matches the folder it lives in
+  [ ] name is in gerund form (-ing) — strongly preferred
+  [ ] description ≤1024 chars, third person, includes what + when
+  [ ] description is specific (no "helps with stuff")
+  [ ] trigger clause enumerates ≥2 concrete conditions (e.g. "...review a PR, audit a diff, or check changes" — not one generic "...when you have X")
+  [ ] body ≤500 lines (split overflow into supporting files)
+  [ ] all paths use forward slashes
+  [ ] linked .md files don't link to other .md files (one level deep)
+  [ ] reference docs live in references/, not loose beside SKILL.md (Check 18)
+  [ ] scripts live in scripts/, not loose beside SKILL.md (Check 19)
+  [ ] every reference file is linked from SKILL.md — no orphans (Check 20)
+  [ ] each reference file ≤200 lines (Check 16); any >100 lines opens with a `## Contents` TOC (Check 17)
+  [ ] no leaked secrets, no security smells
+  [ ] tests.md exists with ≥3 scenarios and a recent `Last verified:` date
+  [ ] tested in a real Claude Code session: skill appears in available list, triggers on the right prompts
+  [ ] (generative/judgment skills only) ran eval/value-add-test.md — skill beats or ties the cold-model baseline, or the loss is documented and accepted
+  [ ] PROMOTION-CHECKLIST.md filled in before promoting to .claude/skills/
+-->
