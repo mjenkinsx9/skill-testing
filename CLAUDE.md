@@ -98,7 +98,7 @@ my-skill/
 ├── SKILL.md              # Overview and instructions (required, keep ≤500 lines)
 ├── tests.md              # at least 3 verification scenarios (quality scoring) — required
 ├── test-prompts.md       # Positive/negative trigger fixtures (trigger-accuracy scoring) — only for autoresearch
-├── PROMOTION-CHECKLIST.md  # Promotion gates for skills in .claude/skills/ — see Skill location rules
+├── PROMOTION-CHECKLIST.md  # Promotion record (human attestations) for skills in .claude/skills/ — see Skill location rules
 ├── scripts/              # Utility scripts — executed, not loaded
 ├── templates/            # Skill-local templates (e.g. program.md scaffolds)
 └── references/           # Detailed docs loaded on demand — recommended for multi-topic skills
@@ -128,7 +128,7 @@ Harness FAILs on missing tests.md outside `staging/`, WARNs inside.
 ## Skill location rules
 
 - **New work** lives in `staging/<gerund-name>/` until it passes the harness AND the tests.md scenarios verify.
-- **Promote** with `cp -r staging/<name> .claude/skills/`, then **strip staging-only working files** from the promoted copy — `goal.md`, `goals/`, and any raw "do-the-work-first" evidence logs that aren't referenced from `SKILL.md` (the live skill ships only the curated sidecars Claude loads at runtime; the evidence trail stays in `staging/`). Record the exact strip list in the skill's `PROMOTION-CHECKLIST.md`. Fill in `PROMOTION-CHECKLIST.md` first (shipped in `templates/skill-skeleton/`); it records the pre-promotion gates, including the value-add verdict for generative skills. `check-skill.sh` (Check 15) warns if a promoted skill lacks it.
+- **Promote** with `cp -r staging/<name> .claude/skills/`, then **strip staging-only working files** from the promoted copy — `goal.md`, `goals/`, and any raw "do-the-work-first" evidence logs that aren't referenced from `SKILL.md` (the live skill ships only the curated sidecars Claude loads at runtime; the evidence trail stays in `staging/`). Record the exact strip list in the skill's `PROMOTION-CHECKLIST.md`. Fill in `PROMOTION-CHECKLIST.md` first (shipped in `templates/skill-skeleton/`); it records only what a machine can't attest — real-work evidence, the security-review signoff, the value-add verdict for generative skills, the strip list, and the live test (mechanical gates are enforced by the harness + CI, not re-attested by hand). `check-skill.sh` (Check 15) warns if a promoted skill lacks it.
 - **Demote rather than fix in place.** If a skill in `.claude/skills/` regresses or FAILs the harness, move it back to `staging/` and fix there. Concretely:
   1. `mv .claude/skills/<name> staging/<name>` (if a `staging/<name>` already exists as the working copy, reconcile into it rather than clobbering).
   2. Fix and re-verify in `staging/`: `eval/check-skill.sh staging/<name>` to zero FAILs, re-run the `tests.md` scenarios, and (for a generative skill) re-run the value-add test, recording the new verdict in `PROMOTION-CHECKLIST.md`.
