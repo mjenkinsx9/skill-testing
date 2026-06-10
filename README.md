@@ -200,13 +200,17 @@ All scripts use forward-slash paths and LF line endings (enforced via
 
 ## 🤝 Contributing
 
-PRs welcome. The bar is mechanical and enforced by CI:
+PRs welcome — see [CONTRIBUTING.md](CONTRIBUTING.md) for setup and the full
+guide. The bar is mechanical and enforced by CI:
 
 1. `eval/check-skill.sh` must report **zero FAILs** on any skill you touch
    (zero WARNs if it's in `examples/`).
 2. `tests.md` scenarios must come from runs you actually performed — fabricated
    scenarios are the one unforgivable sin here.
 3. If you change the harness, the self-tests must pass (and probably grow).
+
+Security reports (harness bypasses, unintended execution) go through private
+vulnerability reporting — see [SECURITY.md](SECURITY.md).
 
 ## 📄 License
 
