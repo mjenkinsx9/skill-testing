@@ -30,6 +30,25 @@ mentions ___, or provides a file matching ___."
 2. Second step.
 3. Third step.
 
+<!--
+OPTIONAL final step — recommended for generative/judgment skills (idea
+generation, review, research, summarization), skip for deterministic /
+safety / format-compliance skills where "what could be better" is the wrong
+frame. Capture-only: it writes observations, it does NOT edit this SKILL.md.
+
+N. **Retro (capture-only).** In 2-3 lines, note what worked and what was
+   inefficient this run. If something is clearly worth changing — a fix, an
+   anti-pattern to guard against, or a tests.md scenario this run revealed —
+   append an entry to the "Retro log" in
+   [references/learnings.md](references/learnings.md) (create it from the
+   skeleton template if absent) with `Status: open`. Do NOT edit this
+   SKILL.md, its `description`, or any instruction in place: a single run is
+   n=1, not enough to justify a durable edit. Surfacing the observation is the
+   deliverable; deliberate patching happens later via `/improving-skills` or a
+   human review. Skip the entry entirely if the run surfaced nothing new — an
+   empty retro beats a speculative one.
+-->
+
 For deeper material, link supporting files from this SKILL.md — keep
 references one level deep (do not chain `a.md → b.md → c.md`). Reference
 docs live in `references/`; link every one you ship (an unlinked file is
@@ -59,6 +78,13 @@ docs or scripts loose at the skill root (Checks 18/19).
   `staging/`. See `tests.md.template` in the skeleton.
 - `test-prompts.md` — only if you plan to autoresearch-improve this skill.
   Positive + negative trigger fixtures used by `improving-skills`.
+- `references/learnings.md` — optional. Recommended for generative/judgment
+  skills (see the optional retro step above). Holds distilled, permanent
+  lessons *and* a capture-only "Retro log" of per-run observations. Retro
+  entries are never auto-applied; `/improving-skills` reads the `Status: open`
+  entries to seed candidate edits, and durable ones get folded up into the
+  distilled lessons. Link it from this SKILL.md like any reference doc. See
+  `references/learnings.md.template`.
 - `references/reference.md` — optional. Keep only if the detail would push the
   body toward the ~500-line budget or is needed on demand, not every run. Else
   inline it. Keep each reference file ≤200 lines (Check 16); give any over

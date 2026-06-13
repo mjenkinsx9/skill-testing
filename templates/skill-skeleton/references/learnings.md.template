@@ -1,0 +1,32 @@
+# Learnings for <skill-name>
+
+OPTIONAL sidecar — recommended for generative/judgment skills. Two roles in
+one file:
+
+1. **Distilled lessons** (top) — permanent, curated guidance from real runs
+   that shapes how the skill should behave. Loaded on demand like any
+   reference doc; link it from SKILL.md.
+2. **Retro log** (bottom) — a raw, capture-only backlog of per-run
+   observations. Entries are **never auto-applied to SKILL.md**: a single run
+   is n=1, not enough to justify a durable edit. `/improving-skills` reads the
+   `Status: open` entries to seed candidate edits; a human or that loop decides
+   what graduates. As entries are addressed, fold the durable ones up into
+   "Distilled lessons" and prune the raw entry — that keeps this file curated
+   and under the 200-line reference budget (Check 16).
+
+## Distilled lessons
+
+<Permanent, evidence-backed guidance. Start empty; fill from the retro log as
+patterns repeat across runs. Each lesson should cite the runs behind it.>
+
+## Retro log
+
+Append one entry per retro (newest first). Keep it terse.
+
+### YYYY-MM-DD — <one-line run summary>
+
+- Worked: <what the skill did well — keep doing it>
+- Inefficient / friction: <what was slow, repeated, or confusing>
+- Candidate edit: <a specific, testable change — NOT applied here>
+- New test? <a tests.md scenario this run revealed, or "none">
+- Status: open | addressed (iter N / commit <sha>) | rejected (<why>)

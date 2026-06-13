@@ -84,6 +84,7 @@ The `improving-skills` skill autoresearches improvements to an existing SKILL.md
 
 - Invoke explicitly: `/improving-skills <path-to-SKILL.md>`. It has `disable-model-invocation: true` and will not auto-fire.
 - Optionally set a measurable target first: `/goal-improve-skill <skill-dir>` interviews you on axis + numeric target + preserved behavior, writes `<skill-dir>/goal.md`, and prints a `/goal` line to paste. The loop seeds `program.md` from `goal.md` when present.
+- If the target ships a `references/learnings.md` with a "Retro log", the loop folds its `Status: open` entries into `program.md` as a candidate-edit backlog and tries those real-run-flagged improvements first (still gated by the harness + composite). This is how the capture-only retro step (skill skeleton) feeds back into deliberate improvement.
 - Prerequisites: the target skill must ship both `tests.md` (≥3 scenarios) and `test-prompts.md` (positive + negative trigger fixtures). The loop refuses to start without them.
 - Output: a scratch git branch and `runs/<run-id>/results.tsv` audit log. `runs/` is gitignored; do not commit run artifacts.
 - When the loop stops, it runs the value-add test once on the final candidate (for generative skills) and records the verdict — a maxed composite proves the skill is tight, not that it beats just asking the model. See `eval/value-add-test.md`.
@@ -115,6 +116,7 @@ Reference supporting files from SKILL.md so Claude knows they exist and what the
 **Which sidecars to keep vs strip.** `tests.md` is always required (outside `staging/`). The rest earn their place or get deleted:
 
 - `references/` files — keep only when the detail would push the SKILL.md body toward the ~500-line budget, or is genuinely needed on demand rather than every run. Otherwise inline it. If a single file grows past 200 lines, split into multiple topic-focused files within `references/`.
+- `references/learnings.md` — optional, recommended for generative/judgment skills. Holds distilled permanent lessons plus a capture-only "Retro log" the skill's optional final retro step appends to (`Status: open` observations, never auto-applied). `/improving-skills` reads the open entries to seed candidate edits; fold the durable ones up into the distilled lessons and prune the raw entry so the file stays under the 200-line reference budget. See `templates/skill-skeleton/references/learnings.md.template`.
 - `test-prompts.md` — only if you plan to autoresearch-improve the skill. `scripts/` — only if the skill executes deterministic logic (see the inlining anti-pattern).
 
 Worked contrast: `reviewing-pull-requests` ships a single `references/reference.md` (a multi-section rubric that would bloat the body) and no `examples.md`; a simple self-explanatory skill ships neither — just `SKILL.md` + `tests.md`. `generating-ai-ideas` and `improving-skills` carry a fuller `references/` set. When in doubt, strip — an unused sidecar is just maintenance surface.
